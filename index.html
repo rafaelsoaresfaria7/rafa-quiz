@@ -1,8 +1,9 @@
+
 <!DOCTYPE html>
 <html lang="pt">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Quiz do Rafa</title>
   <style>
     body {
@@ -24,11 +25,11 @@
       cursor: pointer;
     }
     .correct {
-      background-color: #4CAF50;
+      background-color: #4CAF50 !important;
       color: white;
     }
     .incorrect {
-      background-color: #f44336;
+      background-color: #f44336 !important;
       color: white;
     }
     #result {
@@ -164,6 +165,14 @@
         const btn = document.createElement('button');
         btn.textContent = answer;
         btn.onclick = () => {
+          const buttons = Array.from(answersEl.children);
+          buttons.forEach(b => {
+            b.disabled = true;
+            if (b.textContent === q.correct) {
+              b.classList.add('correct');
+            }
+          });
+
           if (answer === q.correct) {
             btn.classList.add('correct');
             score++;
@@ -171,11 +180,10 @@
             btn.classList.add('incorrect');
           }
 
-          Array.from(answersEl.children).forEach(b => b.disabled = true);
           setTimeout(() => {
             currentQuestion++;
             loadQuestion();
-          }, 1000);
+          }, 1500);
         };
         answersEl.appendChild(btn);
       });
