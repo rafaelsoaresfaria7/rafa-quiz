@@ -1,0 +1,205 @@
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz do Rafa</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    .answers button {
+      display: block;
+      margin: 5px 0;
+      padding: 10px;
+      width: 100%;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .correct {
+      background-color: #4CAF50 !important;
+      color: white;
+    }
+    .incorrect {
+      background-color: #f44336 !important;
+      color: white;
+    }
+    #result {
+      font-size: 20px;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+    .share-button {
+      margin-top: 20px;
+      background-color: #25D366;
+      color: white;
+      padding: 10px;
+      border: none;
+      width: 100%;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Quiz: Quanto sabes sobre o Rafa?</h1>
+  <div id="quiz"></div>
+  <div id="result"></div>
+  <button class="share-button" onclick="shareResult()" style="display:none">Partilhar no WhatsApp</button>
+
+  <script>
+    const quizData = [
+      {
+        question: "Qual é a viagem de sonho do Rafa?",
+        correct: "Japão",
+        options: ["Brasil", "Dubai", "Maldivas"]
+      },
+      {
+        question: "Qual é a cor favorita do Rafa?",
+        correct: "Laranja",
+        options: ["Azul", "Verde", "Cinza"]
+      },
+      {
+        question: "Se o Rafa só pudesse comer uma comida para o resto da vida, qual seria?",
+        correct: "Picanha",
+        options: ["Francesinha", "Panados com arroz branco", "Carne de porco à alentejana"]
+      },
+      {
+        question: "Qual foi o primeiro nome na camisola do Rafa no Bairro FC?",
+        correct: "R. Soares",
+        options: ["Rafa", "R. Faria", "Soares"]
+      },
+      {
+        question: "Quando é que o Rafa começou a trabalhar na ERA?",
+        correct: "15 de abril de 2021",
+        options: ["15 de abril de 2022", "15 de Janeiro de 2022", "15 de janeiro 2021"]
+      },
+      {
+        question: "Qual é o carro de sonho do Rafa?",
+        correct: "Porsche 912 GT3 RS",
+        options: ["Lamborghini", "Audi RS5 dos novos", "Ferrari 574"]
+      },
+      {
+        question: "Quem era o melhor amigo do Rafa no externato?",
+        correct: "Trina",
+        options: ["Darja", "Bruno", "Isolino"]
+      },
+      {
+        question: "Que música o Rafa estava a tentar cantar no vídeo do 'Faltou-me as palavras'?",
+        correct: "Brilhantes Diamantes - Maze",
+        options: ["Verão Azul - D'zrt", "Namorada - Angélico Vieira", "Sabemos onde vamos - Mundo Secreto"]
+      },
+      {
+        question: "Qual era o nome do chalet onde o Rafa trabalhou na Suíça?",
+        correct: "Hakuna",
+        options: ["Matata", "Hakuna Matata", "Maison Stroll"]
+      },
+      {
+        question: "Qual é a bebida favorita do Rafa?",
+        correct: "Água",
+        options: ["Sumol de laranja", "Leite chocolatado Mimosa Magro", "Compal Manga laranja"]
+      },
+      {
+        question: "Quando nasceu o único sobrinho do Rafa?",
+        correct: "23 de Outubro",
+        options: ["22 de Outubro", "23 de Novembro", "21 de Setembro"]
+      },
+      {
+        question: "Quando começou o Rafa a viver em Vila das Aves?",
+        correct: "21 de Outubro de 2023",
+        options: ["21 de outubro de 2022", "20 de Outubro de 2023", "20 de Setembro de 2022"]
+      },
+      {
+        question: "Qual foi a primeira consola do Rafa?",
+        correct: "PS1",
+        options: ["PS2", "PS3", "PSP"]
+      },
+      {
+        question: "Quanto calça o Rafa?",
+        correct: "41",
+        options: ["40", "42", "42,5"]
+      },
+      {
+        question: "Quantas respostas erradas teve o Rafa no exame de código?",
+        correct: "1",
+        options: ["0", "2", "3"]
+      }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    function shuffle(array) {
+      return array.sort(() => Math.random() - 0.5);
+    }
+
+    function loadQuestion() {
+      const container = document.getElementById('quiz');
+      container.innerHTML = '';
+
+      if (currentQuestion >= quizData.length) {
+        document.getElementById('result').textContent = `Acertaste ${score} em ${quizData.length} perguntas!`;
+        document.querySelector('.share-button').style.display = 'block';
+        return;
+      }
+
+      const q = quizData[currentQuestion];
+      const allAnswers = shuffle([q.correct, ...q.options]);
+
+      const qEl = document.createElement('div');
+      qEl.className = 'question';
+      qEl.innerHTML = `<h3>${currentQuestion + 1}. ${q.question}</h3>`;
+
+      const answersEl = document.createElement('div');
+      answersEl.className = 'answers';
+
+      allAnswers.forEach(answer => {
+        const btn = document.createElement('button');
+        btn.textContent = answer;
+        btn.onclick = () => {
+          const buttons = Array.from(answersEl.children);
+          buttons.forEach(b => {
+            b.disabled = true;
+            if (b.textContent === q.correct) {
+              b.classList.add('correct');
+            }
+          });
+
+          if (answer === q.correct) {
+            btn.classList.add('correct');
+            score++;
+          } else {
+            btn.classList.add('incorrect');
+          }
+
+          setTimeout(() => {
+            currentQuestion++;
+            loadQuestion();
+          }, 1500);
+        };
+        answersEl.appendChild(btn);
+      });
+
+      container.appendChild(qEl);
+      container.appendChild(answersEl);
+    }
+
+    function shareResult() {
+      const text = `Acabei o quiz do Rafa e acertei ${score} em ${quizData.length} perguntas! Consegues bater-me?`; 
+      const url = encodeURIComponent(window.location.href);
+      const shareUrl = `https://wa.me/?text=${encodeURIComponent(text)}%20${url}`;
+      window.open(shareUrl, '_blank');
+    }
+
+    loadQuestion();
+  </script>
+</body>
+</html>
