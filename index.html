@@ -1,55 +1,92 @@
+
 <!DOCTYPE html>
 <html lang="pt">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Quiz do Rafa</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 20px;
-      background-color: #f9f9f9;
+      font-family: 'Trebuchet MS', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-image: url('https://upload.wikimedia.org/wikipedia/commons/f/f1/MillionaireUK2020Set.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      color: #f4c430;
+      text-shadow: 1px 1px 2px black;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    h1 {
+      margin-top: 20px;
+      font-size: 32px;
+      background-color: rgba(0,0,0,0.7);
+      padding: 10px 20px;
+      border-radius: 10px;
     }
     .question {
-      margin-bottom: 20px;
+      margin-top: 30px;
+      background-color: rgba(0, 0, 0, 0.85);
+      padding: 20px;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 700px;
     }
     .answers button {
       display: block;
-      margin: 5px 0;
-      padding: 10px;
+      margin: 12px 0;
+      padding: 12px;
       width: 100%;
-      font-size: 16px;
+      font-size: 18px;
       cursor: pointer;
+      border-radius: 10px;
+      border: 2px solid #f4c430;
+      background-color: rgba(0, 0, 0, 0.9);
+      color: #f4c430;
+      transition: all 0.3s;
+    }
+    .answers button:hover {
+      background-color: #f4c430;
+      color: black;
     }
     .correct {
-      background-color: #4CAF50;
-      color: white;
+      background-color: #4CAF50 !important;
+      color: white !important;
     }
     .incorrect {
-      background-color: #f44336;
-      color: white;
+      background-color: #f44336 !important;
+      color: white !important;
     }
     #result {
-      font-size: 20px;
-      margin-top: 20px;
+      font-size: 24px;
+      margin: 40px 0 10px;
       font-weight: bold;
+      text-align: center;
+      color: white;
+      background-color: rgba(0,0,0,0.7);
+      padding: 15px;
+      border-radius: 12px;
     }
     .share-button {
-      margin-top: 20px;
+      margin-bottom: 40px;
       background-color: #25D366;
       color: white;
-      padding: 10px;
+      padding: 14px;
       border: none;
-      width: 100%;
-      font-size: 16px;
+      width: 90%;
+      max-width: 300px;
+      font-size: 18px;
+      border-radius: 10px;
       cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <h1>Quiz: Quanto sabes sobre o Rafa?</h1>
+  <h1>Quiz do Rafa</h1>
   <div id="quiz"></div>
   <div id="result"></div>
   <button class="share-button" onclick="shareResult()" style="display:none">Partilhar no WhatsApp</button>
@@ -85,51 +122,6 @@
         question: "Qual é o carro de sonho do Rafa?",
         correct: "Porsche 912 GT3 RS",
         options: ["Lamborghini", "Audi RS5 dos novos", "Ferrari 574"]
-      },
-      {
-        question: "Quem era o melhor amigo do Rafa no externato?",
-        correct: "Trina",
-        options: ["Darja", "Bruno", "Isolino"]
-      },
-      {
-        question: "Que música o Rafa estava a tentar cantar no vídeo do 'Faltou-me as palavras'?",
-        correct: "Brilhantes Diamantes - Maze",
-        options: ["Verão Azul - D'zrt", "Namorada - Angélico Vieira", "Sabemos onde vamos - Mundo Secreto"]
-      },
-      {
-        question: "Qual era o nome do chalet onde o Rafa trabalhou na Suíça?",
-        correct: "Hakuna",
-        options: ["Matata", "Hakuna Matata", "Maison Stroll"]
-      },
-      {
-        question: "Qual é a bebida favorita do Rafa?",
-        correct: "Água",
-        options: ["Sumol de laranja", "Leite chocolatado Mimosa Magro", "Compal Manga laranja"]
-      },
-      {
-        question: "Quando nasceu o único sobrinho do Rafa?",
-        correct: "23 de Outubro",
-        options: ["22 de Outubro", "23 de Novembro", "21 de Setembro"]
-      },
-      {
-        question: "Quando começou o Rafa a viver em Vila das Aves?",
-        correct: "21 de Outubro de 2023",
-        options: ["21 de outubro de 2022", "20 de Outubro de 2023", "20 de Setembro de 2022"]
-      },
-      {
-        question: "Qual foi a primeira consola do Rafa?",
-        correct: "PS1",
-        options: ["PS2", "PS3", "PSP"]
-      },
-      {
-        question: "Quanto calça o Rafa?",
-        correct: "41",
-        options: ["40", "42", "42,5"]
-      },
-      {
-        question: "Quantas respostas erradas teve o Rafa no exame de código?",
-        correct: "1",
-        options: ["0", "2", "3"]
       }
     ];
 
@@ -164,21 +156,18 @@
         const btn = document.createElement('button');
         btn.textContent = answer;
         btn.onclick = () => {
-          const buttons = Array.from(answersEl.children);
-          buttons.forEach(b => {
-            b.disabled = true;
-            if (b.textContent === q.correct) {
-              b.classList.add('correct');
-            }
-          });
-
           if (answer === q.correct) {
             btn.classList.add('correct');
             score++;
           } else {
             btn.classList.add('incorrect');
+            Array.from(answersEl.children).forEach(b => {
+              if (b.textContent === q.correct) {
+                b.classList.add('correct');
+              }
+            });
           }
-
+          Array.from(answersEl.children).forEach(b => b.disabled = true);
           setTimeout(() => {
             currentQuestion++;
             loadQuestion();
