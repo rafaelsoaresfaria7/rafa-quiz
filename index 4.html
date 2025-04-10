@@ -6,74 +6,45 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Quiz do Rafa</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap');
-
     body {
-      font-family: 'Orbitron', sans-serif;
-      max-width: 800px;
+      font-family: Arial, sans-serif;
+      max-width: 600px;
       margin: 0 auto;
       padding: 20px;
-      background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/MillionaireUK2020Set.jpg/800px-MillionaireUK2020Set.jpg');
-      background-size: cover;
-      background-position: center;
-      color: #f4c430;
-      text-shadow: 1px 1px 2px black;
-    }
-    h1 {
-      text-align: center;
-      font-size: 30px;
-      color: #f4c430;
-      text-shadow: 2px 2px 5px black;
+      background-color: #f9f9f9;
     }
     .question {
       margin-bottom: 20px;
-      background-color: rgba(0, 0, 50, 0.8);
-      padding: 15px;
-      border-radius: 12px;
-      border: 2px solid #f4c430;
     }
     .answers button {
       display: block;
-      margin: 10px 0;
-      padding: 12px;
+      margin: 5px 0;
+      padding: 10px;
       width: 100%;
       font-size: 16px;
-      font-weight: bold;
       cursor: pointer;
-      border-radius: 10px;
-      border: 2px solid #f4c430;
-      background-color: rgba(10, 10, 70, 0.9);
-      color: #f4c430;
-      transition: all 0.3s;
-    }
-    .answers button:hover {
-      background-color: #f4c430;
-      color: black;
     }
     .correct {
       background-color: #4CAF50 !important;
-      color: white !important;
+      color: white;
     }
     .incorrect {
       background-color: #f44336 !important;
-      color: white !important;
+      color: white;
     }
     #result {
-      font-size: 22px;
-      margin-top: 30px;
+      font-size: 20px;
+      margin-top: 20px;
       font-weight: bold;
-      text-align: center;
-      color: white;
     }
     .share-button {
       margin-top: 20px;
       background-color: #25D366;
       color: white;
-      padding: 12px;
+      padding: 10px;
       border: none;
       width: 100%;
-      font-size: 18px;
-      border-radius: 8px;
+      font-size: 16px;
       cursor: pointer;
     }
   </style>
@@ -85,7 +56,83 @@
   <button class="share-button" onclick="shareResult()" style="display:none">Partilhar no WhatsApp</button>
 
   <script>
-    const quizData = [...]; // Mantém os dados originais, omitidos aqui por brevidade
+    const quizData = [
+      {
+        question: "Qual é a viagem de sonho do Rafa?",
+        correct: "Japão",
+        options: ["Brasil", "Dubai", "Maldivas"]
+      },
+      {
+        question: "Qual é a cor favorita do Rafa?",
+        correct: "Laranja",
+        options: ["Azul", "Verde", "Cinza"]
+      },
+      {
+        question: "Se o Rafa só pudesse comer uma comida para o resto da vida, qual seria?",
+        correct: "Picanha",
+        options: ["Francesinha", "Panados com arroz branco", "Carne de porco à alentejana"]
+      },
+      {
+        question: "Qual foi o primeiro nome na camisola do Rafa no Bairro FC?",
+        correct: "R. Soares",
+        options: ["Rafa", "R. Faria", "Soares"]
+      },
+      {
+        question: "Quando é que o Rafa começou a trabalhar na ERA?",
+        correct: "15 de abril de 2021",
+        options: ["15 de abril de 2022", "15 de Janeiro de 2022", "15 de janeiro 2021"]
+      },
+      {
+        question: "Qual é o carro de sonho do Rafa?",
+        correct: "Porsche 912 GT3 RS",
+        options: ["Lamborghini", "Audi RS5 dos novos", "Ferrari 574"]
+      },
+      {
+        question: "Quem era o melhor amigo do Rafa no externato?",
+        correct: "Trina",
+        options: ["Darja", "Bruno", "Isolino"]
+      },
+      {
+        question: "Que música o Rafa estava a tentar cantar no vídeo do 'Faltou-me as palavras'?",
+        correct: "Brilhantes Diamantes - Maze",
+        options: ["Verão Azul - D'zrt", "Namorada - Angélico Vieira", "Sabemos onde vamos - Mundo Secreto"]
+      },
+      {
+        question: "Qual era o nome do chalet onde o Rafa trabalhou na Suíça?",
+        correct: "Hakuna",
+        options: ["Matata", "Hakuna Matata", "Maison Stroll"]
+      },
+      {
+        question: "Qual é a bebida favorita do Rafa?",
+        correct: "Água",
+        options: ["Sumol de laranja", "Leite chocolatado Mimosa Magro", "Compal Manga laranja"]
+      },
+      {
+        question: "Quando nasceu o único sobrinho do Rafa?",
+        correct: "23 de Outubro",
+        options: ["22 de Outubro", "23 de Novembro", "21 de Setembro"]
+      },
+      {
+        question: "Quando começou o Rafa a viver em Vila das Aves?",
+        correct: "21 de Outubro de 2023",
+        options: ["21 de outubro de 2022", "20 de Outubro de 2023", "20 de Setembro de 2022"]
+      },
+      {
+        question: "Qual foi a primeira consola do Rafa?",
+        correct: "PS1",
+        options: ["PS2", "PS3", "PSP"]
+      },
+      {
+        question: "Quanto calça o Rafa?",
+        correct: "41",
+        options: ["40", "42", "42,5"]
+      },
+      {
+        question: "Quantas respostas erradas teve o Rafa no exame de código?",
+        correct: "1",
+        options: ["0", "2", "3"]
+      }
+    ];
 
     let currentQuestion = 0;
     let score = 0;
@@ -118,18 +165,21 @@
         const btn = document.createElement('button');
         btn.textContent = answer;
         btn.onclick = () => {
+          const buttons = Array.from(answersEl.children);
+          buttons.forEach(b => {
+            b.disabled = true;
+            if (b.textContent === q.correct) {
+              b.classList.add('correct');
+            }
+          });
+
           if (answer === q.correct) {
             btn.classList.add('correct');
             score++;
           } else {
             btn.classList.add('incorrect');
-            Array.from(answersEl.children).forEach(b => {
-              if (b.textContent === q.correct) {
-                b.classList.add('correct');
-              }
-            });
           }
-          Array.from(answersEl.children).forEach(b => b.disabled = true);
+
           setTimeout(() => {
             currentQuestion++;
             loadQuestion();
