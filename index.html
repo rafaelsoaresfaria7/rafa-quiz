@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz do Rafa</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    .answers button {
+      display: block;
+      margin: 5px 0;
+      padding: 10px;
+      width: 100%;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .correct {
+      background-color: #4CAF50;
+      color: white;
+    }
+    .incorrect {
+      background-color: #f44336;
+      color: white;
+    }
+    #result {
+      font-size: 20px;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+    .share-button {
+      margin-top: 20px;
+      background-color: #25D366;
+      color: white;
+      padding: 10px;
+      border: none;
+      width: 100%;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Quiz: Quanto sabes sobre o Rafa?</h1>
+  <div id="quiz"></div>
+  <div id="result"></div>
+  <button class="share-button" onclick="shareResult()" style="display:none">Partilhar no WhatsApp</button>
+
+  <script>
+    const quizData = [...]; // simplified for brevity
+    let currentQuestion = 0;
+    let score = 0;
+
+    function shuffle(array) {
+      return array.sort(() => Math.random() - 0.5);
+    }
+
+    function loadQuestion() {
+      const container = document.getElementById('quiz');
+      container.innerHTML = '';
+
+      if (currentQuestion >= quizData.length) {
+        document.getElementById('result').textContent = `Acertaste ${score} em ${quizData.length} perguntas!`;
+        document.querySelector('.share-button').style.display = 'block';
+        return;
+      }
+
+      const q = quizData[currentQuestion];
+      const allAnswers = shuffle([q.correct, ...q.options]);
+
+      const qEl = document.createElement('div');
+      qEl.className = 'question';
+      qEl.innerHTML = `<h3>${currentQuestion + 1}. ${q.question}</h3>`;
+
+      const answersEl = document.createElement('div');
+      answersEl.className = 'answers';
+
+      allAnswers.forEach(answer => {
+        const btn = document.createElement('button');
+        btn.textContent = answer;
+        btn.onclick = () => {
+          if (answer === q.correct) {
+            btn.classList.add('correct');
+            score++;
+          } else {
+            btn.classList.add('incorrect');
+          }
+
+          Array.from(answersEl.children).forEach(b => b.disabled = true);
+          setTimeout(() => {
+            currentQuestion++;
+            loadQuestion();
+          }, 1000);
+        };
+        answersEl.appendChild(btn);
+      });
+
+      container.appendChild(qEl);
+      container.appendChild(answersEl);
+    }
+
+    function shareResult() {
+      const text = `Acabei o quiz do Rafa e acertei ${score} em ${quizData.length} perguntas! Consegues bater-me?`; 
+      const url = encodeURIComponent(window.location.href);
+      const shareUrl = `https://wa.me/?text=${encodeURIComponent(text)}%20${url}`;
+      window.open(shareUrl, '_blank');
+    }
+
+    loadQuestion();
+  </script>
+</body>
+</html>
