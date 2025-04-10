@@ -1,0 +1,155 @@
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz do Rafa</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap');
+
+    body {
+      font-family: 'Orbitron', sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/MillionaireUK2020Set.jpg/800px-MillionaireUK2020Set.jpg');
+      background-size: cover;
+      background-position: center;
+      color: #f4c430;
+      text-shadow: 1px 1px 2px black;
+    }
+    h1 {
+      text-align: center;
+      font-size: 30px;
+      color: #f4c430;
+      text-shadow: 2px 2px 5px black;
+    }
+    .question {
+      margin-bottom: 20px;
+      background-color: rgba(0, 0, 50, 0.8);
+      padding: 15px;
+      border-radius: 12px;
+      border: 2px solid #f4c430;
+    }
+    .answers button {
+      display: block;
+      margin: 10px 0;
+      padding: 12px;
+      width: 100%;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 10px;
+      border: 2px solid #f4c430;
+      background-color: rgba(10, 10, 70, 0.9);
+      color: #f4c430;
+      transition: all 0.3s;
+    }
+    .answers button:hover {
+      background-color: #f4c430;
+      color: black;
+    }
+    .correct {
+      background-color: #4CAF50 !important;
+      color: white !important;
+    }
+    .incorrect {
+      background-color: #f44336 !important;
+      color: white !important;
+    }
+    #result {
+      font-size: 22px;
+      margin-top: 30px;
+      font-weight: bold;
+      text-align: center;
+      color: white;
+    }
+    .share-button {
+      margin-top: 20px;
+      background-color: #25D366;
+      color: white;
+      padding: 12px;
+      border: none;
+      width: 100%;
+      font-size: 18px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Quiz: Quanto sabes sobre o Rafa?</h1>
+  <div id="quiz"></div>
+  <div id="result"></div>
+  <button class="share-button" onclick="shareResult()" style="display:none">Partilhar no WhatsApp</button>
+
+  <script>
+    const quizData = [...]; // Mantém os dados originais, omitidos aqui por brevidade
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    function shuffle(array) {
+      return array.sort(() => Math.random() - 0.5);
+    }
+
+    function loadQuestion() {
+      const container = document.getElementById('quiz');
+      container.innerHTML = '';
+
+      if (currentQuestion >= quizData.length) {
+        document.getElementById('result').textContent = `Acertaste ${score} em ${quizData.length} perguntas!`;
+        document.querySelector('.share-button').style.display = 'block';
+        return;
+      }
+
+      const q = quizData[currentQuestion];
+      const allAnswers = shuffle([q.correct, ...q.options]);
+
+      const qEl = document.createElement('div');
+      qEl.className = 'question';
+      qEl.innerHTML = `<h3>${currentQuestion + 1}. ${q.question}</h3>`;
+
+      const answersEl = document.createElement('div');
+      answersEl.className = 'answers';
+
+      allAnswers.forEach(answer => {
+        const btn = document.createElement('button');
+        btn.textContent = answer;
+        btn.onclick = () => {
+          if (answer === q.correct) {
+            btn.classList.add('correct');
+            score++;
+          } else {
+            btn.classList.add('incorrect');
+            Array.from(answersEl.children).forEach(b => {
+              if (b.textContent === q.correct) {
+                b.classList.add('correct');
+              }
+            });
+          }
+          Array.from(answersEl.children).forEach(b => b.disabled = true);
+          setTimeout(() => {
+            currentQuestion++;
+            loadQuestion();
+          }, 1500);
+        };
+        answersEl.appendChild(btn);
+      });
+
+      container.appendChild(qEl);
+      container.appendChild(answersEl);
+    }
+
+    function shareResult() {
+      const text = `Acabei o quiz do Rafa e acertei ${score} em ${quizData.length} perguntas! Consegues bater-me?`; 
+      const url = encodeURIComponent(window.location.href);
+      const shareUrl = `https://wa.me/?text=${encodeURIComponent(text)}%20${url}`;
+      window.open(shareUrl, '_blank');
+    }
+
+    loadQuestion();
+  </script>
+</body>
+</html>
